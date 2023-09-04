@@ -59,7 +59,7 @@ public:
 };
 
 /*
- * read: A (provided) helper function thats peeks and pops up to `len` bytes
+ * read: A (provided) helper function that peeks and pops up to `len` bytes
  * from a ByteStream Reader into a string;
  */
 void read(Reader &reader, uint64_t len, std::string &out);

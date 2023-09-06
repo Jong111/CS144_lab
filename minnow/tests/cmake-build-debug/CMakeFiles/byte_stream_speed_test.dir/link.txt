@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/byte_stream_speed_test.dir/byte_stream_speed_test.o -o byte_stream_speed_test  -lminnow_optimized -lutil_optimized 

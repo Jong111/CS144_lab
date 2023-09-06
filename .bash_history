@@ -71,3 +71,180 @@ cd build
 cd apps/
 make
 man 2 connect
+ls
+cd minnow/
+git fetch
+cd ..
+git fetch
+cd minnow/
+ls
+cd tests/
+ls
+cd minnow/
+cmake --build build --target check0
+cmake -S . -B build
+cmake --build build
+cmake --build build --target check1
+cmake -S . -B build
+cmake --build build
+cmake --build build --target check1
+cmake -S . -B build
+cmake--build build
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build bild
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+reassembled.insert(pair<uint64_t, string>(first_index, data));
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+ctest -R 'reassembler_speed_test'
+cd tests/
+ctest -R 'reassembler_speed_test'
+ctest -R 'reassembler_speed_test.cc'
+cd..
+cd ..
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1\
+cmake --build build
+cmake --build build --target check1\
+cmake --build build
+cmake --build build --target check
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1
+cmake --build build
+cmake --build build --target check1

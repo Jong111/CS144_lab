@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="CS144_RemoteHost (861526ac-cd6d-43d9-b3f3-884b347f6cc0)" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="CS144_RemoteHost (861526ac-cd6d-43d9-b3f3-884b347f6cc0)" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeDeletion="false">
+    <option name="confirmBeforeDeletion" value="false" />
     <serverData>
       <paths name="CS144_RemoteHost (861526ac-cd6d-43d9-b3f3-884b347f6cc0)">
         <serverdata>
@@ -10,7 +11,7 @@
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/apps/cmake-build-debug" />
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/tests/cmake-build-debug" />
-            <excludedPath local="true" path="$PROJECT_DIR$/minnow/apps/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/minnow/src/cmake-build-debug" />
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/src/cmake-build-debug" />
           </excludedPaths>
         </serverdata>

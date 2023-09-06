@@ -20,7 +20,7 @@ void speed_test(const size_t num_chunks,   // NOLINT(bugprone-easily-swappable-p
     // Generate the data to be written
     const string data = [&] {
         default_random_engine rd{random_seed};
-        uniform_int_distribution<char> ud(67, 68);
+        uniform_int_distribution<char> ud;
         string ret;
         for (size_t i = 0; i < num_chunks * capacity; ++i) {
             ret += ud(rd);

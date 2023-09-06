@@ -1,0 +1,5 @@
+/home/cs144/minnow/src/cmake-build-debug/CMakeFiles/minnow_debug.dir
+/home/cs144/minnow/src/cmake-build-debug/CMakeFiles/minnow_sanitized.dir
+/home/cs144/minnow/src/cmake-build-debug/CMakeFiles/minnow_optimized.dir
+/home/cs144/minnow/src/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cs144/minnow/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir

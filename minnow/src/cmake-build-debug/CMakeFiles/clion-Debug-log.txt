@@ -12,7 +12,6 @@ CMake Warning (dev) in CMakeLists.txt:
   line.
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
--- Configuring done
 CMake Warning (dev) in CMakeLists.txt:
   No cmake_minimum_required command is present.  A line of code such as
 
@@ -22,6 +21,7 @@ CMake Warning (dev) in CMakeLists.txt:
   if you wish to support older CMake versions for this project.  For more
   information run "cmake --help-policy CMP0000".
 This warning is for project developers.  Use -Wno-dev to suppress it.
+-- Configuring done
 
 -- Generating done
 -- Build files have been written to: /home/cs144/minnow/src/cmake-build-debug

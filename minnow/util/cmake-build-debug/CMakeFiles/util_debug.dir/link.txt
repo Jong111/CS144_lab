@@ -1,0 +1,2 @@
+/usr/bin/ar qc libutil_debug.a CMakeFiles/util_debug.dir/address.o CMakeFiles/util_debug.dir/file_descriptor.o CMakeFiles/util_debug.dir/random.o CMakeFiles/util_debug.dir/socket.o
+/usr/bin/ranlib libutil_debug.a

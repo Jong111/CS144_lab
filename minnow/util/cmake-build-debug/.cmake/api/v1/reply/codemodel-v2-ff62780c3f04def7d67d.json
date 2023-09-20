@@ -1,0 +1,74 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Project",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "util_debug::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-util_debug-Debug-467bdfb919206360175f.json",
+					"name" : "util_debug",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "util_optimized::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-util_optimized-Debug-57315fb7dabb91724e5a.json",
+					"name" : "util_optimized",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "util_sanitized::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-util_sanitized-Debug-713b1b816876254aecf0.json",
+					"name" : "util_sanitized",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/cs144/minnow/util/cmake-build-debug",
+		"source" : "/home/cs144/minnow/util"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

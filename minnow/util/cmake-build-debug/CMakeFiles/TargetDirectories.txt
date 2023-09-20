@@ -1,0 +1,5 @@
+/home/cs144/minnow/util/cmake-build-debug/CMakeFiles/util_debug.dir
+/home/cs144/minnow/util/cmake-build-debug/CMakeFiles/util_sanitized.dir
+/home/cs144/minnow/util/cmake-build-debug/CMakeFiles/util_optimized.dir
+/home/cs144/minnow/util/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cs144/minnow/util/cmake-build-debug/CMakeFiles/rebuild_cache.dir

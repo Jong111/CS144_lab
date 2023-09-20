@@ -1,94 +1,118 @@
 #include "reassembler.hh"
-#include<iostream>
 
 using namespace std;
 
 void Reassembler::insert(uint64_t first_index, string data, bool is_last_substring, Writer &output) {
-    // Your code here.
-    // (void)first_index;
-    // (void)data;
-    // (void)is_last_substring;
-    // (void)output;
-    if (data.length() == 0) {
+    if (data.empty()) {
         if (is_last_substring) {
             output.close();
         }
         return;
     }
-    bool flag = false;
-    uint64_t available_capacity = output.available_capacity() - currently_stored_bytes;
-    // cout << "data: " << data << "  available: " << available_capacity << "  cumulative: " << cumulative_accept_index << '\n';
-    if ((!empty && cumulative_accept_index + 1 == first_index) || (empty && cumulative_accept_index == first_index)) {
-        uint64_t idx = 0;
-        while (available_capacity && idx < data.length()) {
-            string str;
-            str += data[idx];
-            output.push(str);
-            if (!empty) {
-                cumulative_accept_index++;
-            }
-            idx++;
-            available_capacity = output.available_capacity() - currently_stored_bytes;
-            if (empty) {
-                empty = false;
-            }
-            if (to_be_reassembled.count(cumulative_accept_index + 1) != 0) {
-                break;
-            }
-        }
-        if (idx == data.length() && is_last_substring) {
-            output.close();
-        }
-        if (to_be_reassembled.count(cumulative_accept_index + 1) > 0) {
-            while (to_be_reassembled.count(cumulative_accept_index + 1) > 0) {
-                flag = true;
-                string str;
-                str += to_be_reassembled[cumulative_accept_index + 1].first;
-                output.push(str);
-                if (empty) {
-                    empty = false;
-                }
-                if (to_be_reassembled.size() == 1 && to_be_reassembled[cumulative_accept_index + 1].second) {
-                    output.close();
-                }
-                to_be_reassembled.erase(cumulative_accept_index + 1);
-                cumulative_accept_index++;
-                currently_stored_bytes--;
-            }
-        }
-        if (cumulative_accept_index + 1 <= first_index + data.length() - 1 && flag) {
-            string const new_data = data.substr(cumulative_accept_index + 1 - first_index);
-            insert(cumulative_accept_index + 1, new_data, is_last_substring, output);
-        }
-    } else {
-        if ((!empty && first_index > cumulative_accept_index + 1) || (empty && first_index > cumulative_accept_index)) {
-            uint64_t idx = 0;
-            uint64_t byte_index = first_index;
-            while (available_capacity > 1 && idx < data.length()) {
-                if (to_be_reassembled.count(byte_index) > 0) {
-                    idx++;
-                    byte_index++;
-                    continue;
-                }
-                string str;
-                str += data[idx];
-                pair<string, bool> const tmp_pair(str, is_last_substring);
-                to_be_reassembled.insert(pair<uint64_t, pair<string, bool>>(byte_index, tmp_pair));
-                currently_stored_bytes++;
-                available_capacity = output.available_capacity() - currently_stored_bytes;
-                idx++;
-                byte_index++;
-            }
-        } else if (first_index < cumulative_accept_index + 1 && !empty && first_index + data.length() >= 1 && first_index + data.length() - 1 >= cumulative_accept_index + 1) {
-            uint64_t const diff = cumulative_accept_index + 1 - first_index;
-            string const new_data = data.substr(diff);
-            insert(cumulative_accept_index + 1, new_data, is_last_substring, output);
-        }
+
+    if (output.available_capacity() == 0) {
+        return;
+    }
+
+    auto const end_index = first_index + data.size();
+    auto const first_unacceptable = first_unassembled_index_ + output.available_capacity();
+
+    // data is not in [first_unassembled_index, first_unacceptable)
+    if (end_index <= first_unassembled_index_ || first_index >= first_unacceptable) {
+        return;
+    }
+
+    // if part of data is out of capacity, then truncate it
+    if (end_index > first_unacceptable) {
+        data = data.substr(0, first_unacceptable - first_index);
+        // if truncated, it won't be last_substring
+        is_last_substring = false;
+    }
+
+    // unordered bytes, save it in buffer and return
+    if (first_index > first_unassembled_index_) {
+        insert_into_buffer(first_index, std::move(data), is_last_substring);
+        return;
+    }
+
+    // remove useless prefix of data (i.e. bytes which are already assembled)
+    if (first_index < first_unassembled_index_) {
+        data = data.substr(first_unassembled_index_ - first_index);
+    }
+
+    // here we have first_index == first_unassembled_index_
+    first_unassembled_index_ += data.size();
+    output.push(std::move(data));
+
+    if (is_last_substring) {
+        output.close();
+    }
+
+    if (!buffer_.empty() && buffer_.begin()->first <= first_unassembled_index_) {
+        pop_from_buffer(output);
     }
 }
 
 uint64_t Reassembler::bytes_pending() const {
-    // Your code here.
-    // return {};
-    return currently_stored_bytes;
+    return buffer_size_;
+}
+
+void Reassembler::insert_into_buffer(const uint64_t first_index, std::string &&data, const bool is_last_substring) {
+    auto begin_index = first_index;
+    const auto end_index = first_index + data.size();
+
+    for (auto it = buffer_.begin(); it != buffer_.end() && begin_index < end_index;) {
+        if (it->first <= begin_index) {
+            begin_index = max(begin_index, it->first + it->second.size());
+            ++it;
+            continue;
+        }
+
+        if (begin_index == first_index && end_index <= it->first) {
+            buffer_size_ += data.size();
+            buffer_.emplace(it, first_index, std::move(data));
+            return;
+        }
+
+        const auto right_index = min(it->first, end_index);
+        const auto len = right_index - begin_index;
+        buffer_.emplace(it, begin_index, data.substr(begin_index - first_index, len));
+        buffer_size_ += len;
+        begin_index = right_index;
+    }
+
+    if (begin_index < end_index) {
+        buffer_size_ += end_index - begin_index;
+        buffer_.emplace_back(begin_index, data.substr(begin_index - first_index));
+    }
+
+    if (is_last_substring) {
+        has_last_ = true;
+    }
+}
+
+void Reassembler::pop_from_buffer(Writer &output) {
+    for (auto it = buffer_.begin(); it != buffer_.end();) {
+        if (it->first > first_unassembled_index_) {
+            break;
+        }
+        // it->first <= first_unassembled_index_
+        const auto end = it->first + it->second.size();
+        if (end <= first_unassembled_index_) {
+            buffer_size_ -= it->second.size();
+        } else {
+            auto data = std::move(it->second);
+            buffer_size_ -= data.size();
+            if (it->first < first_unassembled_index_) {
+                data = data.substr(first_unassembled_index_ - it->first);
+            }
+            first_unassembled_index_ += data.size();
+            output.push(std::move(data));
+        }
+        it = buffer_.erase(it);
+    }
+
+    if (buffer_.empty() && has_last_) {
+        output.close();
+    }
 }

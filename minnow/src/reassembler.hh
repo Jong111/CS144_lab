@@ -2,22 +2,36 @@
 
 #include "byte_stream.hh"
 
-#include <string>
+#include <list>
+#include<string>
 #include<unordered_map>
-#include<utility>
+#include <utility>
 #include <vector>
 
 class Reassembler {
 private:
-    // capacity = first_unacceptable_index - first_unpopped_index
-    // uint64_t first_unpopped_index = 0;
-    uint64_t cumulative_accept_index = 0;
-    // uint64_t first_unacceptable_index = 0;
-    uint64_t currently_stored_bytes = 0;
-    // uint64_t last_substring_index = 0;
-    bool empty = true;
-    // std::unordered_map<uint64_t, std::string> reassembled = {};
-    std::unordered_map<uint64_t, std::pair<std::string, bool>> to_be_reassembled = {};
+//    // capacity = first_unacceptable_index - first_unpopped_index
+//    // uint64_t first_unpopped_index = 0;
+//    uint64_t cumulative_accept_index = 0;
+//    // uint64_t first_unacceptable_index = 0;
+//    uint64_t currently_stored_bytes = 0;
+//    // uint64_t last_substring_index = 0;
+//    bool empty = true;
+//    // std::unordered_map<uint64_t, std::string> reassembled = {};
+//    std::unordered_map<uint64_t, std::pair<std::string, bool>> to_be_reassembled = {};
+
+    uint64_t first_unassembled_index_{0};
+
+    std::list<std::pair<uint64_t, std::string>> buffer_{};
+    uint64_t buffer_size_{0};
+    bool has_last_{false};
+
+    // insert valid but un-ordered data into buffer
+    void insert_into_buffer(uint64_t first_index, std::string &&data, bool is_last_substring);
+
+    // pop invalid bytes and insert valid bytes into writer
+    void pop_from_buffer(Writer &output);
+
 public:
     /*
      * Insert a new substring to be reassembled into a ByteStream.

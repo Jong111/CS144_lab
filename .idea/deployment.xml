@@ -10,6 +10,7 @@
           </mappings>
           <excludedPaths>
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/apps/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/minnow/util/cmake-build-debug" />
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/tests/cmake-build-debug" />
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/src/cmake-build-debug" />
             <excludedPath local="true" path="$PROJECT_DIR$/minnow/src/cmake-build-debug" />

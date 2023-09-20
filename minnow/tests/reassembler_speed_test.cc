@@ -44,12 +44,9 @@ void speed_test(const size_t num_chunks,   // NOLINT(bugprone-easily-swappable-p
 
     const auto start_time = steady_clock::now();
     int i = 0;
-    cout << "size: " << split_data.size();
     while (not split_data.empty()) {
         auto &next = split_data.front();
-        cout << i << '\n';
         i++;
-        cout << get<string>(next) << '\n';
         reassembler.insert(get<uint64_t>(next), move(get<string>(next)), get<bool>(next), stream.writer());
         split_data.pop();
 

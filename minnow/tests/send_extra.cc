@@ -243,30 +243,30 @@ int main()
       test.execute( ExpectSeqno { isn + 5 } );
     }
 
-    {
-      TCPConfig cfg;
-      const Wrap32 isn( rd() );
-      const size_t rto = uniform_int_distribution<uint16_t> { 30, 10000 }( rd );
-      cfg.fixed_isn = isn;
-      cfg.rt_timeout = rto;
+      {
+          TCPConfig cfg;
+          const Wrap32 isn( rd() );
+          const size_t rto = uniform_int_distribution<uint16_t> { 30, 10000 }( rd );
+          cfg.fixed_isn = isn;
+          cfg.rt_timeout = rto;
 
-      TCPSenderTestHarness test { "Don't add FIN if this would make the segment exceed the receiver's window",
-                                  cfg };
-      test.execute( Push {} );
-      test.execute( ExpectMessage {}.with_no_flags().with_syn( true ).with_payload_size( 0 ).with_seqno( isn ) );
-      test.execute( Push( "abc" ).with_close() );
-      test.execute( AckReceived { Wrap32 { isn + 1 } }.with_win( 3 ) );
-      test.execute(
-        ExpectMessage {}.with_payload_size( 3 ).with_data( "abc" ).with_seqno( isn + 1 ).with_no_flags() );
-      test.execute( ExpectSeqno { isn + 4 } );
-      test.execute( ExpectSeqnosInFlight { 3 } );
-      test.execute( AckReceived { Wrap32 { isn + 2 } }.with_win( 2 ) );
-      test.execute( ExpectNoSegment {} );
-      test.execute( AckReceived { Wrap32 { isn + 3 } }.with_win( 1 ) );
-      test.execute( ExpectNoSegment {} );
-      test.execute( AckReceived { Wrap32 { isn + 4 } }.with_win( 1 ) );
-      test.execute( ExpectMessage {}.with_payload_size( 0 ).with_seqno( isn + 4 ).with_fin( true ) );
-    }
+          TCPSenderTestHarness test { "Don't add FIN if this would make the segment exceed the receiver's window",
+                                      cfg };
+          test.execute( Push {} );
+          test.execute( ExpectMessage {}.with_no_flags().with_syn( true ).with_payload_size( 0 ).with_seqno( isn ) );
+          test.execute( Push( "abc" ).with_close() );
+          test.execute( AckReceived { Wrap32 { isn + 1 } }.with_win( 3 ) );
+          test.execute(
+                  ExpectMessage {}.with_payload_size( 3 ).with_data( "abc" ).with_seqno( isn + 1 ).with_no_flags() );
+          test.execute( ExpectSeqno { isn + 4 } );
+          test.execute( ExpectSeqnosInFlight { 3 } );
+          test.execute( AckReceived { Wrap32 { isn + 2 } }.with_win( 2 ) );
+          test.execute( ExpectNoSegment {} );
+          test.execute( AckReceived { Wrap32 { isn + 3 } }.with_win( 1 ) );
+          test.execute( ExpectNoSegment {} );
+          test.execute( AckReceived { Wrap32 { isn + 4 } }.with_win( 1 ) );
+          test.execute( ExpectMessage {}.with_payload_size( 0 ).with_seqno( isn + 4 ).with_fin( true ) );
+      }
 
     {
       TCPConfig cfg;

@@ -1,23 +1,43 @@
 #pragma once
 
-#include <memory>
-#include <string>
+#include <exception>
+#include <iostream>
+#include<memory>
+#include<stacktrace>
+#include<string>
 
-class Buffer
-{
-  std::shared_ptr<std::string> buffer_;
+class Buffer {
+    std::shared_ptr<std::string> buffer_;
 
 public:
-  // NOLINTBEGIN(*-explicit-*)
+    // NOLINTBEGIN(*-explicit-*)
 
-  Buffer( std::string str = {} ) : buffer_( make_shared<std::string>( std::move( str ) ) ) {}
-  operator std::string_view() const { return *buffer_; }
-  operator std::string&() { return *buffer_; }
+    // The complexity is O(1)
+    Buffer(std::string str = {}) : buffer_(make_shared<std::string>(std::move(str))) {
+        // std::cout << "hihihi " << (buffer_ == nullptr) << '\n';
+    }
 
-  // NOLINTEND(*-explicit-*)
+    operator std::string_view() const { return *buffer_; }
 
-  std::string&& release() { return std::move( *buffer_ ); }
-  size_t size() const { return buffer_->size(); }
-  size_t length() const { return buffer_->length(); }
-  bool empty() const { return buffer_->empty(); }
+    operator std::string &() { return *buffer_; }
+
+    // NOLINTEND(*-explicit-*)
+
+    std::string &&release() { return std::move(*buffer_); }
+
+    size_t size() const {
+        return buffer_->size();
+    }
+
+    size_t length() const {
+        return buffer_->length();
+    }
+
+    bool empty() const {
+        return buffer_->empty();
+    }
+
+    void print() {
+        std::cout << *buffer_;
+    }
 };

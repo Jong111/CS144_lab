@@ -40,7 +40,7 @@ void NetworkInterface::send_datagram(const InternetDatagram &dgram, const Addres
             EthernetHeader const ethernetHeader{ETHERNET_BROADCAST, ethernet_address_, EthernetHeader::TYPE_ARP};
             to_be_sents.emplace_back(EthernetFrame{ethernetHeader, serialize(arpMessage)});
             // Queue the InternetDatagram
-            ip_datagram_queue.push_back(dgram);
+            ip_datagram_queue.emplace_back(dgram, ip_num);
         }
     }
 }
@@ -77,10 +77,10 @@ optional<InternetDatagram> NetworkInterface::recv_frame(const EthernetFrame &fra
                 EthernetHeader const ethernetHeader{arpMessage.sender_ethernet_address, ethernet_address_, EthernetHeader::TYPE_IPv4};
                 auto it = ip_datagram_queue.begin();
                 while (it != ip_datagram_queue.end()) {
-                    if (it->header.dst == arpMessage.sender_ip_address) {
-                        // I am not sure whether it's correct to pass *it as a parameter here
-                        // Maybe it's more safe to pass a copy of *it
-                        to_be_sents.emplace_back(EthernetFrame{ethernetHeader, serialize(*it)});
+                    if (it->second == arpMessage.sender_ip_address) {
+                        // I am not sure whether it's correct to pass it->first as a parameter here
+                        // Maybe it's more safe to pass a copy of it->first
+                        to_be_sents.emplace_back(EthernetFrame{ethernetHeader, serialize(it->first)});
                         it = ip_datagram_queue.erase(it);
                     }
                     it++;

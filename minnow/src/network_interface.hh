@@ -50,7 +50,8 @@ private:
 
     std::unordered_map<uint32_t, std::pair<EthernetAddress, size_t>> arp_cache{};
     std::unordered_map<uint32_t, size_t> arp_request{};
-    std::list<InternetDatagram> ip_datagram_queue{};
+    // The second parameter in the pair is the next hop's ip address
+    std::list<std::pair<InternetDatagram, uint32_t>> ip_datagram_queue{};
     std::deque<EthernetFrame> to_be_sents{};
 
 public:

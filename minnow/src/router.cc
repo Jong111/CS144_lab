@@ -30,38 +30,35 @@ void Router::add_route(const uint32_t route_prefix,
 
 void Router::route() {
     for (AsyncNetworkInterface &networkInterface: interfaces_) {
-        optional<InternetDatagram> internetDatagram = std::move(networkInterface.maybe_receive());
-        while (internetDatagram.has_value()) {
-            bool success = false;
-            routeEntry target_entry{};
-            uint8_t max = 0;
-            uint32_t const dst = internetDatagram->header.dst;
-            for (routeEntry const &entry: routing_table) {
-                uint8_t const offset = 32 - entry.prefix_length;
-                uint32_t const match_val = (offset != 32) ? (dst >> offset) : 0;
-                if (match_val == entry.min_ip_address) {
-                    // Match success
-                    success = true;
-                    if (entry.prefix_length >= max) {
-                        max = entry.prefix_length;
-                        target_entry.interface_num = entry.interface_num;
-                        target_entry.next_hop = entry.next_hop;
+        optional<InternetDatagram> internetDatagram = networkInterface.maybe_receive();
+        if (internetDatagram.has_value()) {
+            auto &dgram = internetDatagram.value();
+            if (dgram.header.ttl > 1) {
+                dgram.header.ttl--;
+                dgram.header.compute_checksum();
+
+                routeEntry target_entry{};
+                uint8_t max = 0;
+                uint32_t const dst = dgram.header.dst;
+                bool success = false;
+                for (routeEntry const &entry: routing_table) {
+                    uint8_t const offset = 32 - entry.prefix_length;
+                    uint32_t const match_val = (offset != 32) ? (dst >> offset) : 0;
+                    if (match_val == entry.min_ip_address) {
+                        // Match success
+                        success = true;
+                        if (entry.prefix_length >= max) {
+                            max = entry.prefix_length;
+                            target_entry.interface_num = entry.interface_num;
+                            target_entry.next_hop = entry.next_hop;
+                        }
                     }
                 }
-            }
-            if (success) {
-                // Check TTL
-                if (internetDatagram->header.ttl > 1) {
-                    internetDatagram->header.ttl--;
-                    optional<Address> target_hop = target_entry.next_hop;
-                    if (target_hop.has_value()) {
-                        interface(target_entry.interface_num).send_datagram(internetDatagram.value(), target_hop.value());
-                    } else {
-                        interface(target_entry.interface_num).send_datagram(internetDatagram.value(), Address::from_ipv4_numeric(internetDatagram->header.dst));
-                    }
+                if(success) {
+                    optional<Address> const target_hop = target_entry.next_hop;
+                    interface(target_entry.interface_num).send_datagram(internetDatagram.value(), target_hop.value_or(Address::from_ipv4_numeric(internetDatagram->header.dst)));
                 }
             }
-            internetDatagram = std::move(networkInterface.maybe_receive());
         }
     }
 }
